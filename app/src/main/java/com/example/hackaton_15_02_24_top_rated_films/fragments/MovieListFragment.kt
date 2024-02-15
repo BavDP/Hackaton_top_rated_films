@@ -6,19 +6,31 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import com.example.hackaton_15_02_24_top_rated_films.R
 import com.example.hackaton_15_02_24_top_rated_films.databinding.FragmentMovieListBinding
+import com.example.hackaton_15_02_24_top_rated_films.di.DaggerMovieApplicationComponent
 import com.example.hackaton_15_02_24_top_rated_films.mvvm.movieList.MovieListViewModel
+import com.example.hackaton_15_02_24_top_rated_films.mvvm.movieList.MovieListViewModelFactory
+import javax.inject.Inject
 
 class MovieListFragment : Fragment() {
     private lateinit var _binding: FragmentMovieListBinding
-    private val viewModel: MovieListViewModel by viewModels<MovieListViewModel>()
+    @Inject
+    lateinit var viewModelFactory: MovieListViewModelFactory
+    lateinit var viewModel: MovieListViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // DI create our viewModel
+        val app = DaggerMovieApplicationComponent.create()
+        app.inject(this)
+        viewModel = ViewModelProvider(this, viewModelFactory)[MovieListViewModel::class.java]
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupObservers()
+        viewModel.gotoPage(1)
     }
 
     override fun onCreateView(
@@ -27,6 +39,20 @@ class MovieListFragment : Fragment() {
     ): View? {
         _binding = FragmentMovieListBinding.inflate(inflater)
         return _binding.root
+    }
+
+    private fun setupObservers() {
+        viewModel.movieListLiveData.observe(viewLifecycleOwner) {
+            // TODO: update RecycleView over his adapter
+        }
+
+        viewModel.movieDetailLiveData.observe(viewLifecycleOwner) {
+            parentFragmentManager.beginTransaction()
+                .setReorderingAllowed(true)
+                .addToBackStack("")
+                .replace(R.id.fragmentContainerView, MovieDetailFragment.newInstance(it))
+                .commit()
+        }
     }
 
     companion object {

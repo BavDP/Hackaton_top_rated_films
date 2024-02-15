@@ -6,8 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.hackaton_15_02_24_top_rated_films.databinding.FragmentMovieDetailBinding
+import com.example.hackaton_15_02_24_top_rated_films.models.MovieDetail
 
-class MovieDetailFragment : Fragment() {
+class MovieDetailFragment(movieDetails: MovieDetail) : Fragment() {
     private lateinit var _binding: FragmentMovieDetailBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,6 +24,6 @@ class MovieDetailFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance() = MovieDetailFragment()
+        fun newInstance(movieDetails: MovieDetail) = MovieDetailFragment(movieDetails)
     }
 }
