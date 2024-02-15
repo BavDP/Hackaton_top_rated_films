@@ -3,8 +3,11 @@ package com.example.hackaton_15_02_24_top_rated_films.mvvm.movieList
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.hackaton_15_02_24_top_rated_films.models.Movie
 import com.example.hackaton_15_02_24_top_rated_films.models.MovieDetail
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class MovieListViewModel @Inject constructor(private var repository: MovieListRepository): ViewModel() {
@@ -15,16 +18,23 @@ class MovieListViewModel @Inject constructor(private var repository: MovieListRe
     val movieListLiveData: LiveData<List<Movie>> = _movieListLiveData
     val movieDetailLiveData: LiveData<MovieDetail> = _movieDetailLiveData
 
-    fun gotoPage(pageNum: Int): Unit {
-        // TODO: load movies from repository for page @pageNum and set loaded list to movieListLiveData
+    fun gotoPage(pageNum: Int) {
         currentPage = pageNum
         updateCurrentPage()
     }
 
-    fun updateCurrentPage(): Unit {
+    private fun updateCurrentPage() {
         // TODO: load movies for current page when user scrolled to end of that. currentPage - is number of updating page
         if (filterValue.isEmpty()) {
-            //TODO: simple load movie list
+            viewModelScope.launch(Dispatchers.IO) {
+                try {
+                    repository.fetchTopRatedMovies(currentPage).collect{movies->
+                        _movieListLiveData.postValue(movies)
+                    }
+                } catch (e:Exception) {
+                    e.printStackTrace()
+                }
+            }
         } else {
             //TODO: load list using API for search movies by name (implementation filter by name)
         }
@@ -38,7 +48,7 @@ class MovieListViewModel @Inject constructor(private var repository: MovieListRe
         }
     }
 
-    fun showMovieDetails(movie: Movie): Unit {
-        // TODO: this method is called when user tapped some @movie for view its detail information
+    fun showMovieDetails(movie: Movie) {
+        _movieDetailLiveData.value = MovieDetail() //TODO create real MovieDetail class
     }
 }
