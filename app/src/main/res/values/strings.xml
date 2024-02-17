@@ -2,4 +2,21 @@
     <string name="app_name">Hackaton_15_02_24_top_rated_films</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!--movie(item)-->
+    <string name="posterMovieIV">poster of movie</string>
+    <string name="titleMovieTV">Title: </string>
+    <string name="rateMovieTV">Rate: </string>
+    <string name="titleOverview">Overview: </string>
+    <string name="overviewMovieHintTV">some review </string>
+
+    <!--fragment_movie_detail-->
+    <string name="titleMovieDetailTV">Title: </string>
+    <string name="posterDetailIVDescription">poster of movie</string>
+    <string name="dataMovieDetailTV">Data: </string>
+    <string name="rateMovieDetailTV">Rate: </string>
+    <string name="numberVotesDetailTV">Number of votes: </string>
+    <string name="textTitleOverview">Overview:</string>
+    <string name="overviewMovieDetailTVHint">Some review</string>
+
 </resources>

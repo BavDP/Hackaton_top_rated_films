@@ -1,6 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_marginStart="10dp">
+    <ImageView
+        android:id="@+id/posterMovieIV"
+        android:layout_width="135dp"
+        android:layout_height="200dp"
+        android:contentDescription="@string/posterMovieIV"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/ic_launcher" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/titleMovieTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/titleMovieTV"
+            style="@style/attributeItemMovieTVStyle"/>
+
+        <TextView
+            android:id="@+id/rateMovieTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/rateMovieTV"
+            style="@style/attributeItemMovieTVStyle"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/titleOverview"
+            style="@style/attributeItemMovieTVStyle" />
+
+        <TextView
+            android:id="@+id/overviewMovieTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/overviewMovieHintTV"
+            android:textColorHint="#546E7A"
+            android:textSize="15sp" />
+    </LinearLayout>
 </LinearLayout>
