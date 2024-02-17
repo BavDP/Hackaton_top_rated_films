@@ -11,7 +11,7 @@ import javax.inject.Singleton
 
 
 const val BASE_API = "https://api.themoviedb.org/3/movie/"
-const val TOKEN = ""
+const val TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwOWI4NjYxOTRmZTRiODJhMjJhNWYxMDZmM2I3Y2M4NyIsInN1YiI6IjY1YzgwYzQ2OTQ1MWU3MDE4NDdiNjU5ZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.rTI54H7jLKyALGpbgpwVvkTFVkHWUyEBsLMPy4O_pt0"
 @Module
 class NetworkModule {
 
