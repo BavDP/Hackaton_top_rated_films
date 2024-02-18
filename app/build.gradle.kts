@@ -68,4 +68,7 @@ dependencies {
 
     //convert LiveData to Flow
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
+
+    // glide
+    implementation ("com.github.bumptech.glide:glide:4.16.0")
 }
