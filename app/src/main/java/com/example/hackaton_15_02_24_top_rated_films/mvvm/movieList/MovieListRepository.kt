@@ -1,5 +1,11 @@
 package com.example.hackaton_15_02_24_top_rated_films.mvvm.movieList
 
+import androidx.lifecycle.LiveData
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.liveData
+import com.example.hackaton_15_02_24_top_rated_films.adapters.MoviePagingSource
 import com.example.hackaton_15_02_24_top_rated_films.api.services.MovieRetrofitService
 import com.example.hackaton_15_02_24_top_rated_films.models.Movie
 import kotlinx.coroutines.flow.Flow
@@ -15,7 +21,8 @@ class MovieListRepository @Inject constructor(
 
         return flow {
             val movieList = response.body()?.results?.map { movieResult ->
-                Movie(title = movieResult.title?:"",
+                Movie(id = movieResult.id?:-1,
+                    title = movieResult.title?:"",
                     overview = movieResult.overview?:"",
                     poster = movieResult.poster?:"",
                     rate = movieResult.rate?:0.0)
@@ -23,4 +30,9 @@ class MovieListRepository @Inject constructor(
             emit(movieList ?: emptyList())
         }
     }
+
+    fun getMovies(): LiveData<PagingData<Movie>> = Pager(
+        config = PagingConfig(pageSize = 10, maxSize = 200),
+        pagingSourceFactory = { MoviePagingSource(movieApiService) }
+    ).liveData
 }

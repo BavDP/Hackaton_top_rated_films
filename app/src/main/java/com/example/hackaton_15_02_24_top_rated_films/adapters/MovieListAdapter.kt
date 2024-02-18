@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -14,16 +15,19 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.hackaton_15_02_24_top_rated_films.R
 import com.example.hackaton_15_02_24_top_rated_films.models.Movie
 
-class MovieListAdapter(private var movieList: List<Movie>):
-    ListAdapter<Movie, MovieListAdapter.MyViewHolder>(MovieDiffCallBack()) {
+const val BASE_PATH = "https://image.tmdb.org/t/p/w500/"
 
-    fun setMovies(movies: List<Movie>) {
+class MovieListAdapter(private var movieList: List<Movie>):
+    PagingDataAdapter<Movie, MovieListAdapter.MyViewHolder>(MovieDiffCallBack()) {
+
+    /*fun setMovies(movies: List<Movie>) {
         val list = mutableListOf<Movie>().apply {
             this.addAll(movies)
         }
         movieList = list.toList()
-        submitList(movieList)
-    }
+        submitData()
+    }*/
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -50,7 +54,7 @@ class MovieListAdapter(private var movieList: List<Movie>):
             val rate = movie.rate
             val overview = movie.overview
             Glide.with(itemView)
-                .load(movie.poster)
+                .load(BASE_PATH + movie.poster)
                 .apply(RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL))
                 .into(posterMovieIV)
             titleMovieTV.text = title
@@ -61,10 +65,7 @@ class MovieListAdapter(private var movieList: List<Movie>):
 
     class MovieDiffCallBack: DiffUtil.ItemCallback<Movie>(){
         override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean {
-            return oldItem.poster == newItem.poster &&
-                    oldItem.title == newItem.title &&
-                    oldItem.rate == newItem.rate &&
-                    oldItem.overview == newItem.overview
+            return oldItem.id == newItem.id
         }
 
         override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean {

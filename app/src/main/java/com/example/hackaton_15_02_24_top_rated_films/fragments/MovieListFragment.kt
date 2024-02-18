@@ -47,8 +47,8 @@ class MovieListFragment : Fragment() {
     }
 
     private fun setupObservers() {
-        viewModel.movieListLiveData.observe(viewLifecycleOwner) {
-            (_binding.movieRV.adapter as MovieListAdapter).setMovies(it)
+        viewModel.moviesList.observe(viewLifecycleOwner) {
+            (_binding.movieRV.adapter as MovieListAdapter).submitData(viewLifecycleOwner.lifecycle, it)
         }
 
         viewModel.movieDetailLiveData.observe(viewLifecycleOwner) {

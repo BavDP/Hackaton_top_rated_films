@@ -5,6 +5,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import androidx.paging.liveData
+import com.example.hackaton_15_02_24_top_rated_films.adapters.MoviePagingSource
 import com.example.hackaton_15_02_24_top_rated_films.models.Movie
 import com.example.hackaton_15_02_24_top_rated_films.models.MovieDetail
 import kotlinx.coroutines.Dispatchers
@@ -20,6 +26,9 @@ class MovieListViewModel @Inject constructor(private var repository: MovieListRe
     private val _movieDetailLiveData = MutableLiveData<MovieDetail>()
     val movieListLiveData: LiveData<List<Movie>> = _movieListLiveData
     val movieDetailLiveData: LiveData<MovieDetail> = _movieDetailLiveData
+
+    val moviesList: LiveData<PagingData<Movie>> =
+        repository.getMovies() //.cachedIn(viewModelScope)
 
     fun gotoPage(pageNum: Int) {
         currentPage = pageNum
