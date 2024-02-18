@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -14,9 +15,17 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.hackaton_15_02_24_top_rated_films.R
 import com.example.hackaton_15_02_24_top_rated_films.models.Movie
 
-class MovieListAdapter(private val movieList: List<Movie>):
+class MovieListAdapter(private var movieList: List<Movie>):
     ListAdapter<Movie, MovieListAdapter.MyViewHolder>(MovieDiffCallBack()) {
 
+    fun setMovies(movies: List<Movie>) {
+        val list = mutableListOf<Movie>().apply {
+            this.addAll(movies)
+            this
+        }
+        movieList = list.toList()
+        submitList(movieList)
+    }
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -39,18 +48,19 @@ class MovieListAdapter(private val movieList: List<Movie>):
         private val rateMovieTV: TextView = itemView.findViewById(R.id.rateMovieTV)
         private val overviewMovieTV: TextView = itemView.findViewById(R.id.overviewMovieTV)
         fun bind(movie: Movie){
-            val title = titleMovieTV.text.toString() + movie.title
-            val rate = rateMovieTV.text.toString() + movie.rate
-            val overview = overviewMovieTV.text.toString() + movie.overview
+            val title = movie.title
+            val rate = movie.rate
+            val overview = movie.overview
             Glide.with(itemView)
                 .load(movie.poster)
                 .apply(RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL))
                 .into(posterMovieIV)
             titleMovieTV.text = title
-            rateMovieTV.text = rate
+            rateMovieTV.text = rate.toString()
             overviewMovieTV.text = overview
         }
     }
+
     class MovieDiffCallBack: DiffUtil.ItemCallback<Movie>(){
         override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean {
             return oldItem.poster == newItem.poster &&

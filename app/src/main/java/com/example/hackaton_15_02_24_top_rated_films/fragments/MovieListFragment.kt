@@ -7,7 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import com.example.hackaton_15_02_24_top_rated_films.R
+import com.example.hackaton_15_02_24_top_rated_films.adapters.MovieListAdapter
 import com.example.hackaton_15_02_24_top_rated_films.databinding.FragmentMovieListBinding
 import com.example.hackaton_15_02_24_top_rated_films.di.DaggerMovieApplicationComponent
 import com.example.hackaton_15_02_24_top_rated_films.mvvm.movieList.MovieListViewModel
@@ -30,6 +33,8 @@ class MovieListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupObservers()
+        _binding.movieRV.layoutManager = LinearLayoutManager(requireContext())
+        _binding.movieRV.adapter = MovieListAdapter(listOf())
         viewModel.gotoPage(1)
     }
 
@@ -43,7 +48,7 @@ class MovieListFragment : Fragment() {
 
     private fun setupObservers() {
         viewModel.movieListLiveData.observe(viewLifecycleOwner) {
-            // TODO: update RecycleView over his adapter
+            (_binding.movieRV.adapter as MovieListAdapter).setMovies(it)
         }
 
         viewModel.movieDetailLiveData.observe(viewLifecycleOwner) {

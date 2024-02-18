@@ -15,7 +15,10 @@ class MovieListRepository @Inject constructor(
 
         return flow {
             val movieList = response.body()?.results?.map { movieResult ->
-                Movie() //TODO map for real Movie class
+                Movie(title = movieResult.title?:"",
+                    overview = movieResult.overview?:"",
+                    poster = movieResult.poster?:"",
+                    rate = movieResult.rate?:0.0)
             }
             emit(movieList ?: emptyList())
         }
