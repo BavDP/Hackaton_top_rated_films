@@ -55,7 +55,7 @@ class MovieListFragment : Fragment() {
         return _binding.root
     }
 
-    private fun reloadMovieList(fromPage: Int) {
+    private fun reloadMovieList() {
         loadMovieListDef?.cancel()
         loadMovieListDef = viewLifecycleOwner.lifecycleScope.async {
             viewModel.moviesList.collectLatest { pagingData ->
@@ -67,8 +67,8 @@ class MovieListFragment : Fragment() {
 
     private fun setupObservers() {
 
-        viewModel.currentPageLiveData.observe(viewLifecycleOwner) {page ->
-            reloadMovieList(page)
+        viewModel.currentPageLiveData.observe(viewLifecycleOwner) { _ ->
+            reloadMovieList()
         }
 
         viewModel.movieDetailLiveData.observe(viewLifecycleOwner) {
@@ -83,8 +83,9 @@ class MovieListFragment : Fragment() {
     private fun setupListeners() {
         _binding.gotoPageBtn.setOnClickListener {
             val pageNum = _binding.pageNumEditText.text.toString()
-            if (pageNum.toIntOrNull() != null) {
+            if (pageNum.toIntOrNull() != null && pageNum.toInt() >= 1) {
                 viewModel.gotoPage(pageNum.toInt())
+                print(getLoadedMovies())
             }
         }
     }
