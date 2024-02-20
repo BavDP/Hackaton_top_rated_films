@@ -1,6 +1,7 @@
 package com.example.hackaton_15_02_24_top_rated_films.api.models
 
 import com.google.gson.annotations.SerializedName
+import java.util.Date
 
 data class MovieResponseDTO(
     @SerializedName("results")
@@ -20,6 +21,10 @@ data class MovieResponseDTO(
         @SerializedName("poster_path")
         val poster: String?,
         @SerializedName("vote_average")
-        val rate: Double?
+        val rate: Double?,
+        @SerializedName("vote_count")
+        val voteCount: String?,
+        @SerializedName("release_date")
+        val releaseDate: Date?
     )
 }
