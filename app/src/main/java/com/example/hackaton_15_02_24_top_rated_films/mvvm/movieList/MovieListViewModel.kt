@@ -5,14 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import androidx.paging.liveData
-import com.example.hackaton_15_02_24_top_rated_films.adapters.MoviePagingSource
 import com.example.hackaton_15_02_24_top_rated_films.models.Movie
-import com.example.hackaton_15_02_24_top_rated_films.models.MovieDetail
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -23,9 +18,7 @@ class MovieListViewModel @Inject constructor(private var repository: MovieListRe
     val currentPageLiveData = MutableLiveData<Int>(1)
     private val filterValue = MutableLiveData("")
     private val _movieListLiveData = MutableLiveData<List<Movie>>()
-    private val _movieDetailLiveData = MutableLiveData<MovieDetail>()
     val movieListLiveData: LiveData<List<Movie>> = _movieListLiveData
-    val movieDetailLiveData: LiveData<MovieDetail> = _movieDetailLiveData
 
     var moviesList: Flow<PagingData<Movie>> =
         repository.getMovies(1).cachedIn(viewModelScope)
@@ -40,10 +33,6 @@ class MovieListViewModel @Inject constructor(private var repository: MovieListRe
             this.filterValue.value = filterValue
             gotoPage(1)
         }
-    }
-
-    fun showMovieDetails(movie: Movie) {
-        _movieDetailLiveData.value = MovieDetail() //TODO create real MovieDetail class
     }
 
     private fun updateCurrentPage() {

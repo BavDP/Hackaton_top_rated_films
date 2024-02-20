@@ -4,6 +4,7 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.hackaton_15_02_24_top_rated_films.api.services.MovieRetrofitService
 import com.example.hackaton_15_02_24_top_rated_films.models.Movie
+import java.util.Date
 
 class MoviePagingSource(
     private val remoteDataSource: MovieRetrofitService,
@@ -21,7 +22,10 @@ class MoviePagingSource(
                         title = it.title?:"",
                         overview = it.overview?:"",
                         poster = it.poster?:"",
-                        rate = it.rate?:0.0)
+                        rate = it.rate?:0.0,
+                        voteCount = it.voteCount?:"",
+                        releaseDate = it.releaseDate?: Date()
+                    )
                 }
                 if (movies != null) {
                     LoadResult.Page(
