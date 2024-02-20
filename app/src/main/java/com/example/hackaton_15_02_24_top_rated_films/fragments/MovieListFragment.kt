@@ -14,6 +14,7 @@ import com.example.hackaton_15_02_24_top_rated_films.R
 import com.example.hackaton_15_02_24_top_rated_films.adapters.MovieListAdapter
 import com.example.hackaton_15_02_24_top_rated_films.databinding.FragmentMovieListBinding
 import com.example.hackaton_15_02_24_top_rated_films.di.DaggerMovieApplicationComponent
+import com.example.hackaton_15_02_24_top_rated_films.models.Movie
 import com.example.hackaton_15_02_24_top_rated_films.mvvm.movieList.MovieListViewModel
 import com.example.hackaton_15_02_24_top_rated_films.mvvm.movieList.MovieListViewModelFactory
 import kotlinx.coroutines.Deferred
@@ -86,6 +87,10 @@ class MovieListFragment : Fragment() {
                 viewModel.gotoPage(pageNum.toInt())
             }
         }
+    }
+
+    private fun getLoadedMovies(): List<Movie> {
+        return (_binding.movieRV.adapter as MovieListAdapter).snapshot().items
     }
 
     companion object {
