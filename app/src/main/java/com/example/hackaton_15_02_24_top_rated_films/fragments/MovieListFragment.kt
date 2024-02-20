@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.hackaton_15_02_24_top_rated_films.R
 import com.example.hackaton_15_02_24_top_rated_films.adapters.MovieListAdapter
 import com.example.hackaton_15_02_24_top_rated_films.databinding.FragmentMovieListBinding
 import com.example.hackaton_15_02_24_top_rated_films.di.DaggerMovieApplicationComponent
@@ -76,7 +77,15 @@ class MovieListFragment : Fragment() {
             val pageNum = _binding.pageNumEditText.text.toString()
             if (pageNum.toIntOrNull() != null && pageNum.toInt() >= 1) {
                 viewModel.gotoPage(pageNum.toInt())
+                print(getLoadedMovies())
             }
+        }
+        _binding.btnGoToFilterList.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .setReorderingAllowed(true)
+                .addToBackStack("")
+                .replace(R.id.fragmentContainerView, MovieFilteredFragment.newInstance(getLoadedMovies()))
+                .commit()
         }
     }
 

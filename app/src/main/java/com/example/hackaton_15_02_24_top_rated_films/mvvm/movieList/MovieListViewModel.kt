@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 class MovieListViewModel @Inject constructor(private var repository: MovieListRepository) :
     ViewModel() {
-    val currentPageLiveData = MutableLiveData<Int>(1)
+    val currentPageLiveData = MutableLiveData(1)
     private val _movieDetailLiveData = MutableLiveData<Movie>()
     val movieDetailLiveData: LiveData<Movie> = _movieDetailLiveData
 
@@ -24,24 +24,10 @@ class MovieListViewModel @Inject constructor(private var repository: MovieListRe
         currentPageLiveData.value = pageNum
     }
 
-    /*private fun filterLoadedList(loadedMovieList: List<Movie>, predicate: String): List<Movie> {
-        if (loadedMovieList.isNullOrEmpty()) return listOf()
-        viewModelScope.launch(Dispatchers.IO) {
-            filterValue.asFlow()
-                .debounce(500)
-                .collectLatest { filterParam ->
-                    movieList = movieList.filter { movie ->
-                        true
-                    //TODO add function which filter saved list by the filterParam. Exaple movie.name.contains(filterValue, true)
-                    }
-                }
-        }
-    }*/
-
-    private fun filterLoadedList(loadedMovieList: List<Movie>, predicate: String): List<Movie> {
+    fun filterLoadedList(loadedMovieList: List<Movie>, predicate: String): List<Movie> {
         if (loadedMovieList.isNullOrEmpty()) return listOf()
         return loadedMovieList.filter { movie ->
-            movie.title.contains(predicate)
+            movie.title.contains(predicate, true)
         }
     }
 }

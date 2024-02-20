@@ -19,5 +19,7 @@
     <string name="numberVotesDetailTV">Number of votes: </string>
     <string name="textTitleOverview">Overview:</string>
     <string name="overviewMovieDetailTVHint">Some review</string>
+    <string name="search">Search</string>
+    <string name="find_movie">Find movie</string>
 
 </resources>

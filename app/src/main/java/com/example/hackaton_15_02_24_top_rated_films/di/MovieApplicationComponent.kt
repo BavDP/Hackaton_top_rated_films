@@ -1,6 +1,7 @@
 package com.example.hackaton_15_02_24_top_rated_films.di
 
 import com.example.hackaton_15_02_24_top_rated_films.api.services.MovieRetrofitService
+import com.example.hackaton_15_02_24_top_rated_films.fragments.MovieFilteredFragment
 import com.example.hackaton_15_02_24_top_rated_films.fragments.MovieListFragment
 import com.example.hackaton_15_02_24_top_rated_films.mvvm.movieList.MovieListRepository
 import dagger.Component
@@ -12,4 +13,5 @@ interface MovieApplicationComponent {
     fun movieRetrofit(): MovieRetrofitService
     fun movieRepository(): MovieListRepository
     fun inject(fragment: MovieListFragment)
+    fun inject(fragment: MovieFilteredFragment)
 }
