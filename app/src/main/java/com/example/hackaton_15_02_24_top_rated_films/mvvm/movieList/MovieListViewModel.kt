@@ -27,8 +27,8 @@ class MovieListViewModel @Inject constructor(private var repository: MovieListRe
     val movieListLiveData: LiveData<List<Movie>> = _movieListLiveData
     val movieDetailLiveData: LiveData<MovieDetail> = _movieDetailLiveData
 
-    val moviesList: LiveData<PagingData<Movie>> =
-        repository.getMovies() //.cachedIn(viewModelScope)
+    val moviesList: Flow<PagingData<Movie>> =
+        repository.getMovies().cachedIn(viewModelScope)
 
     fun gotoPage(pageNum: Int) {
         currentPage = pageNum

@@ -7,7 +7,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -17,16 +16,8 @@ import com.example.hackaton_15_02_24_top_rated_films.models.Movie
 
 const val BASE_PATH = "https://image.tmdb.org/t/p/w500/"
 
-class MovieListAdapter(private var movieList: List<Movie>):
+class MovieListAdapter:
     PagingDataAdapter<Movie, MovieListAdapter.MyViewHolder>(MovieDiffCallBack()) {
-
-    /*fun setMovies(movies: List<Movie>) {
-        val list = mutableListOf<Movie>().apply {
-            this.addAll(movies)
-        }
-        movieList = list.toList()
-        submitData()
-    }*/
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -37,13 +28,12 @@ class MovieListAdapter(private var movieList: List<Movie>):
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val movie = movieList[position]
-        holder.bind(movie)
+        val movie = getItem(position)
+        if (movie!=null) {
+            holder.bind(movie)
+        }
     }
 
-    override fun getItemCount(): Int {
-        return movieList.size
-    }
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         private val posterMovieIV : ImageView = itemView.findViewById(R.id.posterMovieIV)
         private val titleMovieTV: TextView = itemView.findViewById(R.id.titleMovieTV)
