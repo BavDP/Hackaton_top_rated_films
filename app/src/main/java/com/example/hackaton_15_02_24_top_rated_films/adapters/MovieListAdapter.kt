@@ -14,6 +14,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.hackaton_15_02_24_top_rated_films.R
 import com.example.hackaton_15_02_24_top_rated_films.models.Movie
 
+const val BASE_PATH = "https://image.tmdb.org/t/p/w500/"
 class MovieListAdapter(private var movieList: List<Movie>):
     ListAdapter<Movie, MovieListAdapter.MyViewHolder>(MovieDiffCallBack()) {
 
@@ -50,7 +51,7 @@ class MovieListAdapter(private var movieList: List<Movie>):
             val rate = movie.rate
             val overview = movie.overview
             Glide.with(itemView)
-                .load(movie.poster)
+                .load(BASE_PATH + movie.poster)
                 .apply(RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL))
                 .into(posterMovieIV)
             titleMovieTV.text = title
