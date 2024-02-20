@@ -16,7 +16,7 @@ import com.example.hackaton_15_02_24_top_rated_films.models.Movie
 
 const val BASE_PATH = "https://image.tmdb.org/t/p/w500/"
 
-class MovieListAdapter:
+class MovieListAdapter(private val onItemClick: (Movie) -> Unit):
     PagingDataAdapter<Movie, MovieListAdapter.MyViewHolder>(MovieDiffCallBack()) {
 
     override fun onCreateViewHolder(
@@ -30,7 +30,7 @@ class MovieListAdapter:
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val movie = getItem(position)
         if (movie!=null) {
-            holder.bind(movie)
+            holder.bind(movie, onItemClick)
         }
     }
 
@@ -39,7 +39,7 @@ class MovieListAdapter:
         private val titleMovieTV: TextView = itemView.findViewById(R.id.titleMovieTV)
         private val rateMovieTV: TextView = itemView.findViewById(R.id.rateMovieTV)
         private val overviewMovieTV: TextView = itemView.findViewById(R.id.overviewMovieTV)
-        fun bind(movie: Movie){
+        fun bind(movie: Movie, onItemClick: (Movie) -> Unit){
             val title = movie.title
             val rate = movie.rate
             val overview = movie.overview
@@ -50,6 +50,10 @@ class MovieListAdapter:
             titleMovieTV.text = title
             rateMovieTV.text = rate.toString()
             overviewMovieTV.text = overview
+
+            itemView.setOnClickListener {
+                onItemClick(movie)
+            }
         }
     }
 

@@ -8,4 +8,4 @@ class Movie(val id: Int,
             val poster: String,
             val rate: Double,
             val voteCount: String,
-            releaseDate: Date)
+            val releaseDate: Date)

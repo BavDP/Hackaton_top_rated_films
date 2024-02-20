@@ -1,11 +1,9 @@
 package com.example.hackaton_15_02_24_top_rated_films.mvvm.movieList
 
-import androidx.lifecycle.LiveData
 import java.util.Date
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import androidx.paging.liveData
 import com.example.hackaton_15_02_24_top_rated_films.adapters.MoviePagingSource
 import com.example.hackaton_15_02_24_top_rated_films.api.services.MovieRetrofitService
 import com.example.hackaton_15_02_24_top_rated_films.models.Movie

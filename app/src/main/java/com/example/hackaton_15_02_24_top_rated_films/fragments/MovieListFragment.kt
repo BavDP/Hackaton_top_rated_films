@@ -39,7 +39,9 @@ class MovieListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding.movieRV.layoutManager = LinearLayoutManager(requireContext())
-        _binding.movieRV.adapter = MovieListAdapter()
+        _binding.movieRV.adapter = MovieListAdapter(){movie ->
+            clickOnItemList(movie)
+        }
         setupListeners()
         setupObservers()
     }
@@ -96,5 +98,12 @@ class MovieListFragment : Fragment() {
     companion object {
         @JvmStatic
         fun newInstance() = MovieListFragment()
+    }
+    private fun clickOnItemList(movie: Movie){
+        val fragment = MovieDetailFragment.newInstance(movie)
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.fragmentContainerView, fragment)
+            .addToBackStack("")
+            .commit()
     }
 }
