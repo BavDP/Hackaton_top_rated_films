@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import com.example.hackaton_15_02_24_top_rated_films.R
@@ -59,6 +60,8 @@ class MovieListFragment : Fragment() {
         loadMovieListDef?.cancel()
         loadMovieListDef = viewLifecycleOwner.lifecycleScope.async {
             viewModel.moviesList.collectLatest { pagingData ->
+                (_binding.movieRV.adapter as MovieListAdapter).submitData(PagingData.from(listOf()))
+                _binding.movieRV.scrollToPosition(0)
                 (_binding.movieRV.adapter as MovieListAdapter).submitData(pagingData)
             }
         }
@@ -78,7 +81,6 @@ class MovieListFragment : Fragment() {
             val pageNum = _binding.pageNumEditText.text.toString()
             if (pageNum.toIntOrNull() != null && pageNum.toInt() >= 1) {
                 viewModel.gotoPage(pageNum.toInt())
-                print(getLoadedMovies())
             }
         }
     }
