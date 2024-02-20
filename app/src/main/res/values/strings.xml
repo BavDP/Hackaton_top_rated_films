@@ -9,6 +9,7 @@
     <string name="rateMovieTV">Rate: </string>
     <string name="titleOverview">Overview: </string>
     <string name="overviewMovieHintTV">some review </string>
+    <string name="load_from_page_number">Load from page:</string>
 
     <!--fragment_movie_detail-->
     <string name="titleMovieDetailTV">Title: </string>

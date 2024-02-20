@@ -6,12 +6,13 @@ import com.example.hackaton_15_02_24_top_rated_films.api.services.MovieRetrofitS
 import com.example.hackaton_15_02_24_top_rated_films.models.Movie
 
 class MoviePagingSource(
-    private val remoteDataSource: MovieRetrofitService
+    private val remoteDataSource: MovieRetrofitService,
+    private val fromPageNum: Int = 1
 ): PagingSource<Int, Movie>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Movie> {
         return try {
-            val position = params.key ?: 1
+            val position = params.key ?: fromPageNum
             val response = remoteDataSource.getTopRatedMovies("uk-UA", position)
 
             if (response.isSuccessful && response.body()!= null) {

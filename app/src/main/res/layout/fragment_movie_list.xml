@@ -20,7 +20,40 @@
         android:id="@+id/movieRV"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/toolbarMoviesList"
+        app:layout_constraintBottom_toTopOf="@id/pageNumEditText"/>
+
+    <TextView
+        android:id="@+id/pageNumLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:labelFor="@+id/pageNumEditText"
+        android:layout_marginStart="16dp"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbarMoviesList"/>
+        app:layout_constraintTop_toBottomOf="@id/movieRV"
+        android:text="@string/load_from_page_number" />
+
+    <EditText
+        android:id="@+id/pageNumEditText"
+        android:layout_width="64dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:ems="10"
+        android:inputType="number"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/pageNumLabel"
+        android:text="1" />
+
+    <ImageButton
+        android:id="@+id/gotoPageBtn"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        app:layout_constraintStart_toEndOf="@id/pageNumEditText"
+        app:layout_constraintTop_toBottomOf="@id/movieRV"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="16dp"
+        android:src="@drawable/play_arrow" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

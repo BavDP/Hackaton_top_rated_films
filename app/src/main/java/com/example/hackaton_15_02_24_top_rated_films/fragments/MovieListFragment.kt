@@ -16,15 +16,20 @@ import com.example.hackaton_15_02_24_top_rated_films.databinding.FragmentMovieLi
 import com.example.hackaton_15_02_24_top_rated_films.di.DaggerMovieApplicationComponent
 import com.example.hackaton_15_02_24_top_rated_films.mvvm.movieList.MovieListViewModel
 import com.example.hackaton_15_02_24_top_rated_films.mvvm.movieList.MovieListViewModelFactory
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.async
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class MovieListFragment : Fragment() {
-    private lateinit var _binding: FragmentMovieListBinding
     @Inject
     lateinit var viewModelFactory: MovieListViewModelFactory
     lateinit var viewModel: MovieListViewModel
+
+    private lateinit var _binding: FragmentMovieListBinding
+    private var loadMovieListDef: Deferred<Unit>? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // DI create our viewModel
@@ -37,6 +42,7 @@ class MovieListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         _binding.movieRV.layoutManager = LinearLayoutManager(requireContext())
         _binding.movieRV.adapter = MovieListAdapter()
+        setupListeners()
         setupObservers()
     }
 
@@ -48,11 +54,20 @@ class MovieListFragment : Fragment() {
         return _binding.root
     }
 
-    private fun setupObservers() {
-        viewLifecycleOwner.lifecycleScope.launch {
+    private fun reloadMovieList(fromPage: Int) {
+        loadMovieListDef?.cancel()
+        loadMovieListDef = viewLifecycleOwner.lifecycleScope.async {
             viewModel.moviesList.collectLatest { pagingData ->
                 (_binding.movieRV.adapter as MovieListAdapter).submitData(pagingData)
             }
+        }
+        loadMovieListDef?.start()
+    }
+
+    private fun setupObservers() {
+
+        viewModel.currentPageLiveData.observe(viewLifecycleOwner) {page ->
+            reloadMovieList(page)
         }
 
         viewModel.movieDetailLiveData.observe(viewLifecycleOwner) {
@@ -61,6 +76,15 @@ class MovieListFragment : Fragment() {
                 .addToBackStack("")
                 .replace(R.id.fragmentContainerView, MovieDetailFragment.newInstance(it))
                 .commit()
+        }
+    }
+
+    private fun setupListeners() {
+        _binding.gotoPageBtn.setOnClickListener {
+            val pageNum = _binding.pageNumEditText.text.toString()
+            if (pageNum.toIntOrNull() != null) {
+                viewModel.gotoPage(pageNum.toInt())
+            }
         }
     }
 

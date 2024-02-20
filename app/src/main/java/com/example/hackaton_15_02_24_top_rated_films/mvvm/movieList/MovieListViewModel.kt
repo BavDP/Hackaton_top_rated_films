@@ -20,26 +20,25 @@ import javax.inject.Inject
 
 class MovieListViewModel @Inject constructor(private var repository: MovieListRepository) :
     ViewModel() {
-    private var currentPage: Int = -1
+    val currentPageLiveData = MutableLiveData<Int>(1)
     private val filterValue = MutableLiveData("")
     private val _movieListLiveData = MutableLiveData<List<Movie>>()
     private val _movieDetailLiveData = MutableLiveData<MovieDetail>()
     val movieListLiveData: LiveData<List<Movie>> = _movieListLiveData
     val movieDetailLiveData: LiveData<MovieDetail> = _movieDetailLiveData
 
-    val moviesList: Flow<PagingData<Movie>> =
-        repository.getMovies().cachedIn(viewModelScope)
+    var moviesList: Flow<PagingData<Movie>> =
+        repository.getMovies(1).cachedIn(viewModelScope)
 
     fun gotoPage(pageNum: Int) {
-        currentPage = pageNum
-        updateCurrentPage()
+        moviesList = repository.getMovies(pageNum).cachedIn(viewModelScope)
+        currentPageLiveData.value = pageNum
     }
 
     fun doFilter(filterValue: String) {
         if (filterValue != this.filterValue.value) {
             this.filterValue.value = filterValue
-            currentPage = 1
-            filterLoadedList()
+            gotoPage(1)
         }
     }
 
@@ -50,7 +49,7 @@ class MovieListViewModel @Inject constructor(private var repository: MovieListRe
     private fun updateCurrentPage() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                repository.fetchTopRatedMovies(currentPage).collect { movies ->
+                repository.fetchTopRatedMovies(currentPageLiveData.value?:1).collect { movies ->
                     _movieListLiveData.postValue(movies)
                 }
             } catch (e: Exception) {

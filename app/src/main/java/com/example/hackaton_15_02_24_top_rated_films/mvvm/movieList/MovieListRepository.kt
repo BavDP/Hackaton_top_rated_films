@@ -31,8 +31,8 @@ class MovieListRepository @Inject constructor(
         }
     }
 
-    fun getMovies(): Flow<PagingData<Movie>> = Pager(
+    fun getMovies(fromPageNum: Int = 1): Flow<PagingData<Movie>> = Pager(
         config = PagingConfig(pageSize = 10, maxSize = 200),
-        pagingSourceFactory = { MoviePagingSource(movieApiService) }
+        pagingSourceFactory = { MoviePagingSource(movieApiService, fromPageNum) }
     ).flow
 }
