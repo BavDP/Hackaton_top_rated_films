@@ -7,15 +7,14 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.example.hackaton_15_02_24_top_rated_films.models.Movie
-import com.example.hackaton_15_02_24_top_rated_films.models.MovieDetail
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 class MovieListViewModel @Inject constructor(private var repository: MovieListRepository) :
     ViewModel() {
     val currentPageLiveData = MutableLiveData<Int>(1)
-    private val _movieDetailLiveData = MutableLiveData<MovieDetail>()
-    val movieDetailLiveData: LiveData<MovieDetail> = _movieDetailLiveData
+    private val _movieDetailLiveData = MutableLiveData<Movie>()
+    val movieDetailLiveData: LiveData<Movie> = _movieDetailLiveData
 
     var moviesList: Flow<PagingData<Movie>> =
         repository.getMovies(1).cachedIn(viewModelScope)

@@ -71,13 +71,6 @@ class MovieListFragment : Fragment() {
             reloadMovieList()
         }
 
-        viewModel.movieDetailLiveData.observe(viewLifecycleOwner) {
-            parentFragmentManager.beginTransaction()
-                .setReorderingAllowed(true)
-                .addToBackStack("")
-                .replace(R.id.fragmentContainerView, MovieDetailFragment.newInstance(it))
-                .commit()
-        }
     }
 
     private fun setupListeners() {

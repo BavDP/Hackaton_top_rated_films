@@ -1,6 +1,7 @@
 package com.example.hackaton_15_02_24_top_rated_films.mvvm.movieList
 
 import androidx.lifecycle.LiveData
+import java.util.Date
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
@@ -20,12 +21,16 @@ class MovieListRepository @Inject constructor(
         if (!response.isSuccessful) throw Exception("Error when fetching data. Code: ${response.errorBody()}")
 
         return flow {
+
+
             val movieList = response.body()?.results?.map { movieResult ->
                 Movie(id = movieResult.id?:-1,
                     title = movieResult.title?:"",
                     overview = movieResult.overview?:"",
                     poster = movieResult.poster?:"",
-                    rate = movieResult.rate?:0.0)
+                    rate = movieResult.rate?:0.0,
+                    voteCount = movieResult.voteCount?:"",
+                    releaseDate = movieResult.releaseDate?: Date())
             }
             emit(movieList ?: emptyList())
         }
