@@ -5,8 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -15,16 +15,10 @@ import com.example.hackaton_15_02_24_top_rated_films.R
 import com.example.hackaton_15_02_24_top_rated_films.models.Movie
 
 const val BASE_PATH = "https://image.tmdb.org/t/p/w500/"
-class MovieListAdapter(private var movieList: List<Movie>):
-    ListAdapter<Movie, MovieListAdapter.MyViewHolder>(MovieDiffCallBack()) {
 
-    fun setMovies(movies: List<Movie>) {
-        val list = mutableListOf<Movie>().apply {
-            this.addAll(movies)
-        }
-        movieList = list.toList()
-        submitList(movieList)
-    }
+class MovieListAdapter:
+    PagingDataAdapter<Movie, MovieListAdapter.MyViewHolder>(MovieDiffCallBack()) {
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -34,13 +28,12 @@ class MovieListAdapter(private var movieList: List<Movie>):
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val movie = movieList[position]
-        holder.bind(movie)
+        val movie = getItem(position)
+        if (movie!=null) {
+            holder.bind(movie)
+        }
     }
 
-    override fun getItemCount(): Int {
-        return movieList.size
-    }
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         private val posterMovieIV : ImageView = itemView.findViewById(R.id.posterMovieIV)
         private val titleMovieTV: TextView = itemView.findViewById(R.id.titleMovieTV)
@@ -62,10 +55,7 @@ class MovieListAdapter(private var movieList: List<Movie>):
 
     class MovieDiffCallBack: DiffUtil.ItemCallback<Movie>(){
         override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean {
-            return oldItem.poster == newItem.poster &&
-                    oldItem.title == newItem.title &&
-                    oldItem.rate == newItem.rate &&
-                    oldItem.overview == newItem.overview
+            return oldItem.id == newItem.id
         }
 
         override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean {

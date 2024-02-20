@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import com.example.hackaton_15_02_24_top_rated_films.R
@@ -15,6 +16,8 @@ import com.example.hackaton_15_02_24_top_rated_films.databinding.FragmentMovieLi
 import com.example.hackaton_15_02_24_top_rated_films.di.DaggerMovieApplicationComponent
 import com.example.hackaton_15_02_24_top_rated_films.mvvm.movieList.MovieListViewModel
 import com.example.hackaton_15_02_24_top_rated_films.mvvm.movieList.MovieListViewModelFactory
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class MovieListFragment : Fragment() {
@@ -32,10 +35,9 @@ class MovieListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupObservers()
         _binding.movieRV.layoutManager = LinearLayoutManager(requireContext())
-        _binding.movieRV.adapter = MovieListAdapter(listOf())
-        viewModel.gotoPage(1)
+        _binding.movieRV.adapter = MovieListAdapter()
+        setupObservers()
     }
 
     override fun onCreateView(
@@ -47,8 +49,10 @@ class MovieListFragment : Fragment() {
     }
 
     private fun setupObservers() {
-        viewModel.movieListLiveData.observe(viewLifecycleOwner) {
-            (_binding.movieRV.adapter as MovieListAdapter).setMovies(it)
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.moviesList.collectLatest { pagingData ->
+                (_binding.movieRV.adapter as MovieListAdapter).submitData(pagingData)
+            }
         }
 
         viewModel.movieDetailLiveData.observe(viewLifecycleOwner) {
