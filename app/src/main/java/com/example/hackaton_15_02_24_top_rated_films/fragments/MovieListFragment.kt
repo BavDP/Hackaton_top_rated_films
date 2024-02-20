@@ -5,13 +5,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView.LayoutManager
-import com.example.hackaton_15_02_24_top_rated_films.R
 import com.example.hackaton_15_02_24_top_rated_films.adapters.MovieListAdapter
 import com.example.hackaton_15_02_24_top_rated_films.databinding.FragmentMovieListBinding
 import com.example.hackaton_15_02_24_top_rated_films.di.DaggerMovieApplicationComponent
@@ -20,15 +17,13 @@ import com.example.hackaton_15_02_24_top_rated_films.mvvm.movieList.MovieListVie
 import com.example.hackaton_15_02_24_top_rated_films.mvvm.movieList.MovieListViewModelFactory
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class MovieListFragment : Fragment() {
     @Inject
     lateinit var viewModelFactory: MovieListViewModelFactory
-    lateinit var viewModel: MovieListViewModel
+    private lateinit var viewModel: MovieListViewModel
 
     private lateinit var _binding: FragmentMovieListBinding
     private var loadMovieListDef: Deferred<Unit>? = null
@@ -51,7 +46,7 @@ class MovieListFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentMovieListBinding.inflate(inflater)
         return _binding.root
     }
