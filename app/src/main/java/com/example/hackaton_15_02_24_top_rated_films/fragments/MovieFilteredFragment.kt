@@ -23,7 +23,7 @@ class MovieFilteredFragment(
 
     @Inject
     lateinit var viewModelFactory: MovieListViewModelFactory
-    lateinit var viewModel: MovieListViewModel
+    private lateinit var viewModel: MovieListViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
